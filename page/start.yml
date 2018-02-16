@@ -1,0 +1,20 @@
+settings:
+  layout:
+    - html
+    - main
+  title: PageCounter_v2
+content:
+  -
+    type: div
+    attribute:
+      class: row
+    innerHTML:
+      -
+        type: div
+        attribute:
+          class: col-sm-12 responsive
+          id: start_content
+        innerHTML:
+      -
+        type: script
+        innerHTML: "PluginWfAjax.load('start_content', 'list_all');"

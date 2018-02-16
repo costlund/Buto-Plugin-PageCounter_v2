@@ -1,0 +1,38 @@
+tables:
+  page_counter_v2_page:
+    field:
+      session_id:
+        type: varchar(255)
+      HTTP_HOST:
+        type: varchar(255)
+      HTTP_USER_AGENT:
+        type: varchar(255)
+      HTTP_REFERER:
+        type: varchar(255)
+      HTTP_COOKIE:
+        type: mediumtext
+      REMOTE_ADDR:
+        type: varchar(255)
+      REQUEST_URI:
+        type: varchar(255)
+      theme:
+        type: varchar(255)
+      class:
+        type: varchar(255)
+      method:
+        type: varchar(255)
+      language:
+        type: varchar(255)
+extra:
+  _description: Extra field to add to each table if not exist in schema.
+  field:
+    created_at:
+      type: timestamp
+      default: CURRENT_TIMESTAMP
+    updated_at:
+      type: timestamp
+      default: 'null'
+    created_by:
+      type: varchar(50)
+    updated_by:
+      type: varchar(50)    
