@@ -4,17 +4,17 @@ tables:
       session_id:
         type: varchar(255)
       HTTP_HOST:
-        type: varchar(255)
+        type: mediumtext
       HTTP_USER_AGENT:
-        type: varchar(255)
+        type: mediumtext
       HTTP_REFERER:
-        type: varchar(255)
+        type: mediumtext
       HTTP_COOKIE:
         type: mediumtext
       REMOTE_ADDR:
-        type: varchar(255)
+        type: mediumtext
       REQUEST_URI:
-        type: varchar(255)
+        type: mediumtext
       theme:
         type: varchar(255)
       class:
