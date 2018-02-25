@@ -1,5 +1,7 @@
 <?php
 /**
+ * Backend plugin.
+ * For users with role webmaster or webadmin.
  * Writes page hits to MySql table.
  * 
  * Backend settings.
@@ -15,8 +17,10 @@ plugin:
     counter_v2:
       settings:
         mysql: 'yml:/_php_settings_.yml'
+        list_all:
+          limit: 500 (optional, default 1000, limit rows in list all)
 events:
-  document_render_before:
+  module_method_before:
     -
       plugin: 'page/counter_v2'
       method: count
@@ -29,6 +33,9 @@ class PluginPageCounter_v2{
       wfPlugin::includeonce('wf/array');
       wfPlugin::includeonce('wf/yml');
       $this->data = wfPlugin::getPluginSettings('page/counter_v2', true);
+      if(!$this->data->get('settings/list_all/limit')){
+        $this->data->set('settings/list_all/limit', 1000);
+      }
     }
   }
   public function db_open(){
@@ -59,8 +66,8 @@ class PluginPageCounter_v2{
     wfPlugin::enable('datatable/datatable_1_10_13');
     wfPlugin::enable('datatable/datatable_1_10_16');
     wfArray::set($GLOBALS, 'sys/layout_path', '/plugin/page/counter_v2/layout');
-    if(!wfUser::hasRole("webmaster") && !wfUser::hasRole("databasemaster") && !wfUser::hasRole("webadmin")){
-      exit('Role webmaster, webadmin or databasemaster is required!');
+    if(!wfUser::hasRole("webmaster") && !wfUser::hasRole("webadmin")){
+      exit('Role webmaster or webadmin is required!');
     }
   }
   /**
@@ -74,7 +81,7 @@ class PluginPageCounter_v2{
   public function page_list_all(){
     $this->init_page();
     $this->db_open();
-    $rs = $this->mysql->runSql("select session_id, HTTP_HOST, HTTP_USER_AGENT, HTTP_COOKIE, REMOTE_ADDR, HTTP_REFERER, REQUEST_URI, theme, class, method, language, created_at from page_counter_v2_page order by created_at desc;");
+    $rs = $this->mysql->runSql("select session_id, HTTP_HOST, HTTP_USER_AGENT, HTTP_COOKIE, REMOTE_ADDR, HTTP_REFERER, REQUEST_URI, theme, class, method, language, created_at from page_counter_v2_page order by created_at desc limit ".$this->data->get('settings/list_all/limit').";");
     $rs = $rs['data'];
     $tr = array();
     foreach ($rs as $key => $value){

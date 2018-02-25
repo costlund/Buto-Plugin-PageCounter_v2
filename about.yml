@@ -1,0 +1,4 @@
+version: 1.0
+history:
+  '1.0': First version.
+  '1.1': Add limit to All hits as setting param list_all/limit.
