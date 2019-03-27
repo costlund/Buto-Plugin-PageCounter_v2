@@ -1,30 +1,4 @@
 <?php
-/**
- * Backend plugin.
- * For users with role webmaster or webadmin.
- * Writes page hits to MySql table.
- * 
- * Backend settings.
-plugin_modules:
-  counter:
-    plugin: 'page/counter_v2'
-    settings:
-      mysql: 'yml:/_php_settings_.yml'
- * 
- * Event settings.
-plugin:
-  page:
-    counter_v2:
-      settings:
-        mysql: 'yml:/_php_settings_.yml'
-        list_all:
-          limit: 500 (optional, default 1000, limit rows in list all)
-events:
-  module_method_before:
-    -
-      plugin: 'page/counter_v2'
-      method: count
- */
 class PluginPageCounter_v2{
   public $data = null;
   public $mysql = null;
@@ -36,6 +10,7 @@ class PluginPageCounter_v2{
       if(!$this->data->get('settings/list_all/limit')){
         $this->data->set('settings/list_all/limit', 1000);
       }
+      wfPlugin::enable('twitter/bootstrap335v');
     }
   }
   public function db_open(){
