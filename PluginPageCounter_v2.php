@@ -38,7 +38,6 @@ class PluginPageCounter_v2{
   private function init_page(){
     wfPlugin::includeonce('wf/array');
     wfPlugin::includeonce('wf/yml');
-    wfPlugin::enable('datatable/datatable_1_10_13');
     wfPlugin::enable('datatable/datatable_1_10_16');
     wfArray::set($GLOBALS, 'sys/layout_path', '/plugin/page/counter_v2/layout');
     if(!wfUser::hasRole("webmaster") && !wfUser::hasRole("webadmin")){
