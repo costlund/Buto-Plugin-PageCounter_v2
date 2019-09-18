@@ -1,16 +1,60 @@
 <?php
+/**
+ * Backend plugin.
+ * For users with role webmaster or webadmin.
+ * Writes page hits to MySql table.
+ * 
+ * Backend settings.
+plugin_modules:
+  counter:
+    plugin: 'page/counter_v2'
+    settings:
+      mysql: 'yml:/_php_settings_.yml'
+ * 
+ * Event settings.
+plugin:
+  page:
+    counter_v2:
+      settings:
+        mysql: 'yml:/_php_settings_.yml'
+        list_all:
+          limit: 500 (optional, default 1000, limit rows in list all)
+events:
+  module_method_before:
+    -
+      plugin: 'page/counter_v2'
+      method: count
+ */
 class PluginPageCounter_v2{
   public $data = null;
   public $mysql = null;
   function __construct($buto) {
     if($buto){
+      /**
+       * Enable.
+       */
+      wfPlugin::enable('davegandy/fontawesome450');
+      wfPlugin::enable('wf/dom');
+      wfPlugin::enable('wf/bootstrap');
+      wfPlugin::enable('wf/ajax');
+      wfPlugin::enable('samstephenson/prototype');
+      wfPlugin::enable('wf/textareatab');
+      wfPlugin::enable('wf/callbackjson');
+      wfPlugin::enable('prism/prismjs');
+      wfPlugin::enable('wf/onkeypress');
+      wfPlugin::enable('wf/bootstrapjs');
+      wfPlugin::enable('datatable/datatable_1_10_16');
+      wfPlugin::enable('eternicode/bootstrapdatepicker');
+      wfPlugin::enable('twitter/bootstrap335v');
+      /**
+       * 
+       */
       wfPlugin::includeonce('wf/array');
       wfPlugin::includeonce('wf/yml');
       $this->data = wfPlugin::getPluginSettings('page/counter_v2', true);
       if(!$this->data->get('settings/list_all/limit')){
         $this->data->set('settings/list_all/limit', 1000);
       }
-      wfPlugin::enable('twitter/bootstrap335v');
     }
   }
   public function db_open(){
@@ -23,12 +67,18 @@ class PluginPageCounter_v2{
    */
   public function event_count($data){
     if(wfArray::get($GLOBALS, 'sys/plugin') != 'page/counter_v2'){
+      $post_data = wfHelp::getYmlDump(wfRequest::getAll());
+      $post_data = str_replace("'", "\'", $post_data);
       $this->db_open();
       wfPlugin::includeonce('wf/array');
       $server = new PluginWfArray($_SERVER);
       $REQUEST_URI = $server->get('REQUEST_URI');
       $REQUEST_URI = utf8_encode($REQUEST_URI);
-      $this->mysql->runSql("insert into page_counter_v2_page (session_id,HTTP_HOST,HTTP_USER_AGENT,HTTP_REFERER,HTTP_COOKIE,REMOTE_ADDR,REQUEST_URI,theme,class,method,language) values ('".session_id()."','".$server->get('HTTP_HOST')."','".$server->get('HTTP_USER_AGENT')."','".$server->get('HTTP_REFERER')."','".$server->get('HTTP_COOKIE')."','".$server->get('REMOTE_ADDR')."','". $REQUEST_URI ."','".wfArray::get($GLOBALS, 'sys/theme')."','".wfArray::get($GLOBALS, 'sys/class')."','".wfArray::get($GLOBALS, 'sys/method')."','".wfI18n::getLanguage()."')");
+      $REQUEST_METHOD = $server->get('REQUEST_METHOD');
+      $sql = new PluginWfArray();
+      $sql->set('sql', "insert into page_counter_v2_page (session_id,HTTP_HOST,HTTP_USER_AGENT,HTTP_REFERER,HTTP_COOKIE,REMOTE_ADDR,REQUEST_URI,theme,class,method,language,REQUEST_METHOD,post_data) values ('".session_id()."','".$server->get('HTTP_HOST')."','".$server->get('HTTP_USER_AGENT')."','".$server->get('HTTP_REFERER')."','".$server->get('HTTP_COOKIE')."','".$server->get('REMOTE_ADDR')."','". $REQUEST_URI ."','".wfArray::get($GLOBALS, 'sys/theme')."','".wfArray::get($GLOBALS, 'sys/class')."','".wfArray::get($GLOBALS, 'sys/method')."','".wfI18n::getLanguage()."','$REQUEST_METHOD',?)");
+      $sql->set('params/0', array('type' => 's', 'value' => $post_data));
+      $this->mysql->execute($sql->get());
     }
     return null;
   }
@@ -38,6 +88,7 @@ class PluginPageCounter_v2{
   private function init_page(){
     wfPlugin::includeonce('wf/array');
     wfPlugin::includeonce('wf/yml');
+    wfPlugin::enable('datatable/datatable_1_10_13');
     wfPlugin::enable('datatable/datatable_1_10_16');
     wfArray::set($GLOBALS, 'sys/layout_path', '/plugin/page/counter_v2/layout');
     if(!wfUser::hasRole("webmaster") && !wfUser::hasRole("webadmin")){
@@ -55,7 +106,7 @@ class PluginPageCounter_v2{
   public function page_list_all(){
     $this->init_page();
     $this->db_open();
-    $rs = $this->mysql->runSql("select session_id, HTTP_HOST, HTTP_USER_AGENT, HTTP_COOKIE, REMOTE_ADDR, HTTP_REFERER, REQUEST_URI, theme, class, method, language, created_at from page_counter_v2_page order by created_at desc limit ".$this->data->get('settings/list_all/limit').";");
+    $rs = $this->mysql->runSql("select session_id, HTTP_HOST, HTTP_USER_AGENT, HTTP_COOKIE, REMOTE_ADDR, HTTP_REFERER, REQUEST_URI, theme, language, created_at, REQUEST_METHOD from page_counter_v2_page order by created_at desc limit ".$this->data->get('settings/list_all/limit').";");
     $rs = $rs['data'];
     $tr = array();
     foreach ($rs as $key => $value){
@@ -70,9 +121,8 @@ class PluginPageCounter_v2{
           wfDocument::createHtmlElement('td', $item->get('HTTP_REFERER')),
           wfDocument::createHtmlElement('td', $item->get('REQUEST_URI')),
           wfDocument::createHtmlElement('td', $item->get('theme')),
-          wfDocument::createHtmlElement('td', $item->get('class')),
-          wfDocument::createHtmlElement('td', $item->get('method')),
-          wfDocument::createHtmlElement('td', $item->get('language'))
+          wfDocument::createHtmlElement('td', $item->get('language')),
+          wfDocument::createHtmlElement('td', $item->get('REQUEST_METHOD'))
           ));
     }
     $page = $this->getYml('page/list_all.yml');

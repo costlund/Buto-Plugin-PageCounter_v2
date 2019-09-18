@@ -23,6 +23,10 @@ tables:
         type: varchar(255)
       language:
         type: varchar(255)
+      REQUEST_METHOD:
+        type: varchar(255)
+      post_data:
+        type: mediumtext
 extra:
   _description: Extra field to add to each table if not exist in schema.
   field:
