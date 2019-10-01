@@ -76,8 +76,20 @@ class PluginPageCounter_v2{
       $REQUEST_URI = utf8_encode($REQUEST_URI);
       $REQUEST_METHOD = $server->get('REQUEST_METHOD');
       $sql = new PluginWfArray();
-      $sql->set('sql', "insert into page_counter_v2_page (session_id,HTTP_HOST,HTTP_USER_AGENT,HTTP_REFERER,HTTP_COOKIE,REMOTE_ADDR,REQUEST_URI,theme,class,method,language,REQUEST_METHOD,post_data) values ('".session_id()."','".$server->get('HTTP_HOST')."','".$server->get('HTTP_USER_AGENT')."','".$server->get('HTTP_REFERER')."','".$server->get('HTTP_COOKIE')."','".$server->get('REMOTE_ADDR')."','". $REQUEST_URI ."','".wfArray::get($GLOBALS, 'sys/theme')."','".wfArray::get($GLOBALS, 'sys/class')."','".wfArray::get($GLOBALS, 'sys/method')."','".wfI18n::getLanguage()."','$REQUEST_METHOD',?)");
-      $sql->set('params/0', array('type' => 's', 'value' => $post_data));
+      $sql->set('sql', "insert into page_counter_v2_page (session_id,HTTP_HOST,HTTP_USER_AGENT,HTTP_REFERER,HTTP_COOKIE,REMOTE_ADDR,REQUEST_URI,theme,class,method,language,REQUEST_METHOD,post_data) values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+      $sql->set('params/0', array('type' => 's', 'value' => session_id()));
+      $sql->set('params/1', array('type' => 's', 'value' => $server->get('HTTP_HOST')));
+      $sql->set('params/2', array('type' => 's', 'value' => $server->get('HTTP_USER_AGENT')));
+      $sql->set('params/3', array('type' => 's', 'value' => $server->get('HTTP_REFERER')));
+      $sql->set('params/4', array('type' => 's', 'value' => $server->get('HTTP_COOKIE')));
+      $sql->set('params/5', array('type' => 's', 'value' => $server->get('REMOTE_ADDR')));
+      $sql->set('params/6', array('type' => 's', 'value' => $REQUEST_URI));
+      $sql->set('params/7', array('type' => 's', 'value' => wfArray::get($GLOBALS, 'sys/theme')));
+      $sql->set('params/8', array('type' => 's', 'value' => wfArray::get($GLOBALS, 'sys/class')));
+      $sql->set('params/9', array('type' => 's', 'value' => wfArray::get($GLOBALS, 'sys/method')));
+      $sql->set('params/10', array('type' => 's', 'value' => wfI18n::getLanguage()));
+      $sql->set('params/11', array('type' => 's', 'value' => $REQUEST_METHOD));
+      $sql->set('params/12', array('type' => 's', 'value' => $post_data));
       $this->mysql->execute($sql->get());
     }
     return null;
