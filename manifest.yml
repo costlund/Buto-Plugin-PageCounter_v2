@@ -1,21 +1,26 @@
-version: '1.0'
+version: 1.1.0
 history:
-  '1.0':
+  1.1.0:
+    date: '2020-10-28'
+    title: 'Log'
+    description: 'Set event=false for PluginWfMysql to avoid log.'
+  1.0.0:
     date: '2019-03-28'
+    title: 'Manifest'
     description: 'Manifest created.'
 plugin:
   -
     name: wf/array
-    version: 1.0.1
+    version: 1.2.0
   -
     name: wf/yml
-    version: '1.2'
+    version: 1.2.2
   -
     name: wf/mysql
-    version: '1.9'
+    version: 1.12.0
   -
     name: davegandy/fontawesome450
-    version: '1.0'
+    version: null
   -
     name: wf/dom
     version: '1.0'
@@ -24,10 +29,10 @@ plugin:
     version: '1.0'
   -
     name: wf/ajax
-    version: '1.2'
+    version: 1.4.1
   -
     name: samstephenson/prototype
-    version: '1.0'
+    version: null
   -
     name: wf/textareatab
     version: '1.0'
@@ -36,7 +41,7 @@ plugin:
     version: '1.0'
   -
     name: prism/prismjs
-    version: '1.0'
+    version: null
   -
     name: wf/onkeypress
     version: '1.1'
@@ -48,13 +53,13 @@ plugin:
     version: '1.1'
   -
     name: eternicode/bootstrapdatepicker
-    version: '1.0'
+    version: null
   -
     name: twitter/bootstrap335v
-    version: '1.0'
+    version: 1.0.1
   -
     name: datatable/datatable_1_10_13
-    version: '1.0'
+    version: null
 sys:
   -
     name: mercury
