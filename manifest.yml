@@ -20,7 +20,7 @@ plugin:
     version: 1.13.0
   -
     name: davegandy/fontawesome450
-    version: '1.0'
+    version: null
   -
     name: wf/dom
     version: '1.0'
@@ -41,7 +41,7 @@ plugin:
     version: '1.0'
   -
     name: prism/prismjs
-    version: '1.0'
+    version: null
   -
     name: wf/onkeypress
     version: '1.1'
