@@ -1,5 +1,9 @@
-version: 1.1.5
+version: 1.1.6
 history:
+  1.1.6:
+    date: '2022-09-21'
+    title: Time and memory
+    description: 'Set time to 600 sek. Set memory to 2048M.'
   1.1.5:
     date: '2022-06-09'
     title: I18n

@@ -29,6 +29,11 @@ class PluginPageCounter_v2{
       if(!$this->data->get('settings/list_all/limit')){
         $this->data->set('settings/list_all/limit', 1000);
       }
+      /**
+       * 
+       */
+      set_time_limit(60*10);
+      ini_set('memory_limit', '2048M');
     }
   }
   public function db_open(){
