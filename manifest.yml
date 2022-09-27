@@ -1,8 +1,12 @@
-version: 1.1.6
+version: 1.1.7
 history:
+  1.1.7:
+    date: '2022-09-27'
+    title: Versions
+    description: 'Versions update.'
   1.1.6:
     date: '2022-09-21'
-    title: Time and memory
+    title: 'Time and memory'
     description: 'Set time to 600 sek. Set memory to 2048M.'
   1.1.5:
     date: '2022-06-09'
@@ -35,13 +39,13 @@ history:
 plugin:
   -
     name: wf/array
-    version: 1.2.3
+    version: 1.2.4
   -
     name: wf/yml
-    version: 1.4.0
+    version: 1.5.0
   -
     name: wf/mysql
-    version: 1.14.7
+    version: 1.14.9
   -
     name: davegandy/fontawesome450
     version: '1.0'
@@ -59,7 +63,7 @@ plugin:
     version: null
   -
     name: wf/textareatab
-    version: '1.0'
+    version: 1.0.1
   -
     name: wf/callbackjson
     version: '1.0'
@@ -71,7 +75,7 @@ plugin:
     version: '1.1'
   -
     name: wf/bootstrapjs
-    version: 1.7.1
+    version: 1.7.2
   -
     name: datatable/datatable_1_10_16
     version: '1.1'
