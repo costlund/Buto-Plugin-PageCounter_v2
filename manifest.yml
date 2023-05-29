@@ -1,5 +1,9 @@
-version: 1.1.12
+version: 1.1.13
 history:
+  1.1.13:
+    date: '2023-05-29'
+    title: Versions
+    description: 'Versions update.'
   1.1.12:
     date: '2023-04-14'
     title: Versions
@@ -95,7 +99,7 @@ plugin:
     version: '1.1'
   -
     name: wf/bootstrapjs
-    version: 1.13.0
+    version: 1.14.0
   -
     name: datatable/datatable_1_10_16
     version: '1.1'
