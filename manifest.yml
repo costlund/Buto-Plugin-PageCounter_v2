@@ -1,5 +1,9 @@
-version: 1.1.13
+version: 1.2.0
 history:
+  1.2.0:
+    date: '2023-06-05'
+    title: Clean up
+    description: 'Clean up. Using ajax request for tables.'
   1.1.13:
     date: '2023-05-29'
     title: Versions
@@ -71,9 +75,6 @@ plugin:
     name: wf/mysql
     version: 1.15.0
   -
-    name: davegandy/fontawesome450
-    version: '1.0'
-  -
     name: wf/dom
     version: '1.0'
   -
@@ -90,7 +91,7 @@ plugin:
     version: 1.0.1
   -
     name: wf/callbackjson
-    version: '1.0'
+    version: 1.0.0
   -
     name: prism/prismjs
     version: '1.0'
@@ -101,7 +102,7 @@ plugin:
     name: wf/bootstrapjs
     version: 1.14.0
   -
-    name: datatable/datatable_1_10_16
+    name: datatable/datatable_1_10_18
     version: '1.1'
   -
     name: eternicode/bootstrapdatepicker
@@ -109,9 +110,6 @@ plugin:
   -
     name: twitter/bootstrap335v
     version: 1.0.1
-  -
-    name: datatable/datatable_1_10_13
-    version: null
 sys:
   -
     name: mercury

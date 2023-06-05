@@ -1,96 +1,33 @@
-settings:
-  name: 'Bootstrap Navbar'
 content:
   -
-    type: nav
-    attribute:
-      class: 'navbar navbar-default'
-    innerHTML:
-      0:
-        type: div
-        attribute:
-          class: navbar-header
-        innerHTML:
-          -
-            type: button
-            attribute:
-              type: button
-              class: 'navbar-toggle collapsed'
-              data-toggle: collapse
-              data-target: '#abcd'
-              aria-expanded: 'false'
-            innerHTML:
-              0:
-                type: span
-                attribute:
-                  class: icon-bar
-              1:
-                type: span
-                attribute:
-                  class: icon-bar
-              3:
-                type: span
-                attribute:
-                  class: icon-bar
-          -
-            type: a
-            attribute:
-              class: navbar-brand
-              href: '/'
-            innerHTML: PageCounter_v2
-      2:
-        type: div
-        settings:
-          disabled: false
-        attribute:
-          class: 'collapse navbar-collapse'
-          id: 'abcd'
-        innerHTML:
-          -
-            type: ul
-            attribute:
-              class: 'nav navbar-nav'
-            innerHTML:
-              -
-                type: li
-                innerHTML:
-                  -
-                    type: a
-                    attribute:
-                      onclick: "PluginWfAjax.load('start_content', 'list_all');return false;"
-                    innerHTML: All hits
-              -
-                type: li
-                innerHTML:
-                  -
-                    type: a
-                    attribute:
-                      onclick: "PluginWfAjax.load('start_content', 'list_group_by_ip');return false;"
-                    innerHTML: IP
-              -
-                type: li
-                innerHTML:
-                  -
-                    type: a
-                    attribute:
-                      onclick: "PluginWfAjax.load('start_content', 'list_group_by_page');return false;"
-                    innerHTML: Page
-              -
-                type: li
-                innerHTML:
-                  -
-                    type: a
-                    attribute:
-                      onclick: "PluginWfAjax.load('start_content', 'list_group_by_day');return false;"
-                    innerHTML: Day
-              -
-                type: li
-                innerHTML:
-                  -
-                    type: a
-                    attribute:
-                      onclick: "PluginWfAjax.load('start_content', 'list_group_by_day_and_ip');return false;"
-                    innerHTML: 'Day+IP'
-            
-
-
+    type: widget
+    data:
+      plugin: 'bootstrap/navbar_v1'
+      method: navbar
+      data:
+        navbar:
+          id: _my_navbar_id_
+          item:
+            -
+              text: Start
+              href: '#start'
+              onclick: location.reload()
+            -
+              type: dropdown
+              text: Reports
+              item:
+                -
+                  onclick: "PluginWfAjax.load('start_content', 'list_all');return false;"
+                  text: All hits
+                -
+                  onclick: "PluginWfAjax.load('start_content', 'list_group_by_ip');return false;"
+                  text: IP
+                -
+                  onclick: "PluginWfAjax.load('start_content', 'list_group_by_page');return false;"
+                  text: Page
+                -
+                  onclick: "PluginWfAjax.load('start_content', 'list_group_by_day');return false;"
+                  text: Day
+                -
+                  onclick: "PluginWfAjax.load('start_content', 'list_group_by_day_and_ip');return false;"
+                  text: 'Day+IP'

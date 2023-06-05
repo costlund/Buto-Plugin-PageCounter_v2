@@ -4,7 +4,6 @@ Write page hits to an mysql db with a backend to monitor.
 
 ## Backend
 For users with role webmaster or webadmin.
-Writes page hits to MySql table.
 ```
 plugin_modules:
   counter:
@@ -13,10 +12,11 @@ plugin_modules:
       mysql: 'yml:/_php_settings_.yml'
 ```
 
+### Url
+- /counter/start
 
 
-
-## Event
+## Settings
 
 ```
 plugin:
@@ -27,6 +27,8 @@ plugin:
         list_all:
           limit: 500 (optional, default 1000, limit rows in list all)
 ```
+
+## Event
 
 ```
 events:

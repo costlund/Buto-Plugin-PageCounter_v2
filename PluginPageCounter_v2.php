@@ -5,22 +5,6 @@ class PluginPageCounter_v2{
   function __construct($buto) {
     if($buto){
       /**
-       * Enable.
-       */
-      wfPlugin::enable('davegandy/fontawesome450');
-      wfPlugin::enable('wf/dom');
-      wfPlugin::enable('wf/bootstrap');
-      wfPlugin::enable('wf/ajax');
-      wfPlugin::enable('samstephenson/prototype');
-      wfPlugin::enable('wf/textareatab');
-      wfPlugin::enable('wf/callbackjson');
-      wfPlugin::enable('prism/prismjs');
-      wfPlugin::enable('wf/onkeypress');
-      wfPlugin::enable('wf/bootstrapjs');
-      wfPlugin::enable('datatable/datatable_1_10_16');
-      wfPlugin::enable('eternicode/bootstrapdatepicker');
-      wfPlugin::enable('twitter/bootstrap335v');
-      /**
        * 
        */
       wfPlugin::includeonce('wf/array');
@@ -84,10 +68,10 @@ class PluginPageCounter_v2{
    * 
    */
   private function init_page(){
+    wfPlugin::enable('wf/table');
     wfPlugin::includeonce('wf/array');
     wfPlugin::includeonce('wf/yml');
-    wfPlugin::enable('datatable/datatable_1_10_13');
-    wfPlugin::enable('datatable/datatable_1_10_16');
+    wfPlugin::enable('datatable/datatable_1_10_18');
     wfArray::set($GLOBALS, 'sys/layout_path', '/plugin/page/counter_v2/layout');
     if(!wfUser::hasRole("webmaster") && !wfUser::hasRole("webadmin")){
       exit('Role webmaster or webadmin is required!');
@@ -103,102 +87,71 @@ class PluginPageCounter_v2{
   }
   public function page_list_all(){
     $this->init_page();
+    $page = $this->getYml('page/list_all.yml');
+    wfDocument::mergeLayout($page->get());
+  }
+  public function page_list_all_data(){
     $this->db_open();
     $rs = $this->mysql->runSql("select session_id, HTTP_HOST, HTTP_USER_AGENT, HTTP_COOKIE, REMOTE_ADDR, HTTP_REFERER, REQUEST_URI, theme, language, created_at, REQUEST_METHOD from page_counter_v2_page order by created_at desc limit ".$this->data->get('settings/list_all/limit').";");
     $rs = $rs['data'];
-    $tr = array();
-    foreach ($rs as $key => $value){
-      $item = new PluginWfArray($value);
-      $tr[] = wfDocument::createHtmlElement('tr', array(
-          wfDocument::createHtmlElement('td', date('ymd H:i', strtotime($item->get('created_at')))),
-          wfDocument::createHtmlElement('td', $item->get('session_id')),
-          wfDocument::createHtmlElement('td', $item->get('HTTP_HOST')),
-          wfDocument::createHtmlElement('td', $item->get('HTTP_USER_AGENT')),
-          wfDocument::createHtmlElement('td', $item->get('HTTP_COOKIE')),
-          wfDocument::createHtmlElement('td', array($this->getRemoteAddrLink($item->get('REMOTE_ADDR')))),
-          wfDocument::createHtmlElement('td', $item->get('HTTP_REFERER')),
-          wfDocument::createHtmlElement('td', $item->get('REQUEST_URI')),
-          wfDocument::createHtmlElement('td', $item->get('theme')),
-          wfDocument::createHtmlElement('td', $item->get('language')),
-          wfDocument::createHtmlElement('td', $item->get('REQUEST_METHOD'))
-          ));
-    }
-    $page = $this->getYml('page/list_all.yml');
-    $page->setById('tbody', 'innerHTML', $tr);
-    wfDocument::mergeLayout($page->get());
+    wfPlugin::includeonce('datatable/datatable_1_10_18');
+    $datatable = new PluginDatatableDatatable_1_10_18();
+    exit($datatable->set_table_data($rs));
   }
   private function getRemoteAddrLink($REMOTE_ADDR){
     return wfDocument::createHtmlElement('a', $REMOTE_ADDR, array('href' => "http://whatismyipaddress.com/ip/$REMOTE_ADDR", 'target' => '_blank'));
   }
   public function page_list_group_by_ip(){
     $this->init_page();
+    $page = $this->getYml('page/list_group_by_ip.yml');
+    wfDocument::mergeLayout($page->get());
+  }
+  public function page_list_group_by_ip_data(){
     $this->db_open();
     $rs = $this->mysql->runSql("select REMOTE_ADDR, count(session_id) as hits from page_counter_v2_page group by REMOTE_ADDR;");
     $rs = $rs['data'];
-    $tr = array();
-    foreach ($rs as $key => $value){
-      $item = new PluginWfArray($value);
-      $tr[] = wfDocument::createHtmlElement('tr', array(
-          wfDocument::createHtmlElement('td', array($this->getRemoteAddrLink($item->get('REMOTE_ADDR')))),
-          wfDocument::createHtmlElement('td', $item->get('hits'))
-          ));
-    }
-    $page = $this->getYml('page/list_group_by_ip.yml');
-    $page->setById('tbody', 'innerHTML', $tr);
-    wfDocument::mergeLayout($page->get());
+    wfPlugin::includeonce('datatable/datatable_1_10_18');
+    $datatable = new PluginDatatableDatatable_1_10_18();
+    exit($datatable->set_table_data($rs));
   }
   public function page_list_group_by_page(){
     $this->init_page();
+    $page = $this->getYml('page/list_group_by_page.yml');
+    wfDocument::mergeLayout($page->get());
+  }
+  public function page_list_group_by_page_data(){
     $this->db_open();
     $rs = $this->mysql->runSql("select class, method, count(session_id) as hits from page_counter_v2_page group by class, method;");
     $rs = $rs['data'];
-    $tr = array();
-    foreach ($rs as $key => $value){
-      $item = new PluginWfArray($value);
-      $tr[] = wfDocument::createHtmlElement('tr', array(
-          wfDocument::createHtmlElement('td', $item->get('class')),
-          wfDocument::createHtmlElement('td', $item->get('method')),
-          wfDocument::createHtmlElement('td', $item->get('hits'))
-          ));
-    }
-    $page = $this->getYml('page/list_group_by_page.yml');
-    $page->setById('tbody', 'innerHTML', $tr);
-    wfDocument::mergeLayout($page->get());
+    wfPlugin::includeonce('datatable/datatable_1_10_18');
+    $datatable = new PluginDatatableDatatable_1_10_18();
+    exit($datatable->set_table_data($rs));
   }
   public function page_list_group_by_day(){
     $this->init_page();
+    $page = $this->getYml('page/list_group_by_day.yml');
+    wfDocument::mergeLayout($page->get());
+  }
+  public function page_list_group_by_day_data(){
     $this->db_open();
     $rs = $this->mysql->runSql("select substr(created_at, 1, 10) as day, count(session_id) as hits from page_counter_v2_page group by day;");
     $rs = $rs['data'];
-    $tr = array();
-    foreach ($rs as $key => $value){
-      $item = new PluginWfArray($value);
-      $tr[] = wfDocument::createHtmlElement('tr', array(
-          wfDocument::createHtmlElement('td', $item->get('day')),
-          wfDocument::createHtmlElement('td', $item->get('hits'))
-          ));
-    }
-    $page = $this->getYml('page/list_group_by_day.yml');
-    $page->setById('tbody', 'innerHTML', $tr);
-    wfDocument::mergeLayout($page->get());
+    wfPlugin::includeonce('datatable/datatable_1_10_18');
+    $datatable = new PluginDatatableDatatable_1_10_18();
+    exit($datatable->set_table_data($rs));
   }
   public function page_list_group_by_day_and_ip(){
     $this->init_page();
+    $page = $this->getYml('page/list_group_by_day_and_ip.yml');
+    wfDocument::mergeLayout($page->get());
+  }
+  public function page_list_group_by_day_and_ip_data(){
     $this->db_open();
     $rs = $this->mysql->runSql("select substr(created_at, 1, 10) as day, REMOTE_ADDR, count(session_id) as hits from page_counter_v2_page group by day, REMOTE_ADDR;");
     $rs = $rs['data'];
-    $tr = array();
-    foreach ($rs as $key => $value){
-      $item = new PluginWfArray($value);
-      $tr[] = wfDocument::createHtmlElement('tr', array(
-          wfDocument::createHtmlElement('td', $item->get('day')),
-          wfDocument::createHtmlElement('td', array($this->getRemoteAddrLink($item->get('REMOTE_ADDR')))),
-          wfDocument::createHtmlElement('td', $item->get('hits'))
-          ));
-    }
-    $page = $this->getYml('page/list_group_by_day_and_ip.yml');
-    $page->setById('tbody', 'innerHTML', $tr);
-    wfDocument::mergeLayout($page->get());
+    wfPlugin::includeonce('datatable/datatable_1_10_18');
+    $datatable = new PluginDatatableDatatable_1_10_18();
+    exit($datatable->set_table_data($rs));
   }
   private function getYml($file){
     return new PluginWfYml(wfArray::get($GLOBALS, 'sys/app_dir').'/plugin/page/counter_v2/'.$file);
