@@ -36,14 +36,39 @@ class PluginPageCounter_v2{
    * Run this event on document_render_before.
    */
   public function event_count($data){
-    if(wfArray::get($GLOBALS, 'sys/plugin') != 'page/counter_v2'){
+    $data = new PluginWfArray($data);
+    wfPlugin::includeonce('wf/array');
+    $server = new PluginWfArray($_SERVER);
+    $REQUEST_URI = $server->get('REQUEST_URI');
+    $REQUEST_URI = utf8_encode($REQUEST_URI);
+    /**
+     * filter, class
+     */
+    $filter_class = false;
+    if($data->get('data/filter/class') && in_array(wfArray::get($GLOBALS, 'sys/class'), $data->get('data/filter/class'))){
+      $filter_class = true;
+    }
+    /**
+     * filter, uri
+     */
+    $filter_uri = false;
+    if( $data->get('data/filter/uri') ){
+      wfPlugin::includeonce('string/match');
+      $match = new PluginStringMatch();
+      foreach($data->get('data/filter/uri') as $k => $v){
+        if($match->wildcard($v, $REQUEST_URI) > 0){
+          $filter_uri = true;
+          break;
+        }
+      }
+    }
+    /**
+     * 
+     */
+    if(wfArray::get($GLOBALS, 'sys/plugin') != 'page/counter_v2' && !$filter_class && !$filter_uri){
       $post_data = wfHelp::getYmlDump(wfRequest::getAll());
       $post_data = str_replace("'", "\'", $post_data);
       $this->db_open();
-      wfPlugin::includeonce('wf/array');
-      $server = new PluginWfArray($_SERVER);
-      $REQUEST_URI = $server->get('REQUEST_URI');
-      $REQUEST_URI = utf8_encode($REQUEST_URI);
       $REQUEST_METHOD = $server->get('REQUEST_METHOD');
       $sql = new PluginWfArray();
       $sql->set('sql', "insert into page_counter_v2_page (session_id,HTTP_HOST,HTTP_USER_AGENT,HTTP_REFERER,HTTP_COOKIE,REMOTE_ADDR,REQUEST_URI,theme,class,method,language,REQUEST_METHOD,post_data) values (?,?,?,?,?,?,?,?,?,?,?,?,?)");

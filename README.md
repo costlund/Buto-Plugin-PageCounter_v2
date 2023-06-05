@@ -36,6 +36,26 @@ events:
     -
       plugin: 'page/counter_v2'
       method: count
+      data:
+```
+
+### Filter
+Add filter params to filter away requests.
+```
+        filter:
+```
+#### Class
+Class param sys/class in Globals.
+```
+          class:
+            - 'qr'
+```
+
+### URI
+Server variable REQUEST_URI.
+```
+          uri:
+            - '*contact*'
 ```
 
 ## Schema
