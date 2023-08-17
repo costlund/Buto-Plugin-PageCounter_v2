@@ -38,12 +38,13 @@ class PluginPageCounter_v2{
   public function event_count($data){
     if(wfArray::get($GLOBALS, 'sys/plugin') != 'page/counter_v2'){
       $post_data = wfHelp::getYmlDump(wfRequest::getAll());
-      $post_data = str_replace("'", "\'", $post_data);
+      $post_data = wfPhpfunc::str_replace("'", "\'", $post_data);
       $this->db_open();
       wfPlugin::includeonce('wf/array');
       $server = new PluginWfArray($_SERVER);
       $REQUEST_URI = $server->get('REQUEST_URI');
-      $REQUEST_URI = utf8_encode($REQUEST_URI);
+      //$REQUEST_URI = utf8_encode($REQUEST_URI);
+      $REQUEST_URI = mb_convert_encoding($REQUEST_URI, 'UTF-8', 'ISO-8859-1');
       $REQUEST_METHOD = $server->get('REQUEST_METHOD');
       $sql = new PluginWfArray();
       $sql->set('sql', "insert into page_counter_v2_page (session_id,HTTP_HOST,HTTP_USER_AGENT,HTTP_REFERER,HTTP_COOKIE,REMOTE_ADDR,REQUEST_URI,theme,class,method,language,REQUEST_METHOD,post_data) values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
@@ -72,7 +73,7 @@ class PluginPageCounter_v2{
     wfPlugin::includeonce('wf/array');
     wfPlugin::includeonce('wf/yml');
     wfPlugin::enable('datatable/datatable_1_10_18');
-    wfArray::set($GLOBALS, 'sys/layout_path', '/plugin/page/counter_v2/layout');
+    wfGlobals::setSys('layout_path', '/plugin/page/counter_v2/layout');
     if(!wfUser::hasRole("webmaster") && !wfUser::hasRole("webadmin")){
       exit('Role webmaster or webadmin is required!');
     }
@@ -134,7 +135,7 @@ class PluginPageCounter_v2{
   }
   public function page_list_group_by_day_data(){
     $this->db_open();
-    $rs = $this->mysql->runSql("select substr(created_at, 1, 10) as day, count(session_id) as hits from page_counter_v2_page group by day;");
+    $rs = $this->mysql->runSql("select wfPhpfunc::substr(created_at, 1, 10) as day, count(session_id) as hits from page_counter_v2_page group by day;");
     $rs = $rs['data'];
     wfPlugin::includeonce('datatable/datatable_1_10_18');
     $datatable = new PluginDatatableDatatable_1_10_18();
@@ -147,7 +148,7 @@ class PluginPageCounter_v2{
   }
   public function page_list_group_by_day_and_ip_data(){
     $this->db_open();
-    $rs = $this->mysql->runSql("select substr(created_at, 1, 10) as day, REMOTE_ADDR, count(session_id) as hits from page_counter_v2_page group by day, REMOTE_ADDR;");
+    $rs = $this->mysql->runSql("select wfPhpfunc::substr(created_at, 1, 10) as day, REMOTE_ADDR, count(session_id) as hits from page_counter_v2_page group by day, REMOTE_ADDR;");
     $rs = $rs['data'];
     wfPlugin::includeonce('datatable/datatable_1_10_18');
     $datatable = new PluginDatatableDatatable_1_10_18();
