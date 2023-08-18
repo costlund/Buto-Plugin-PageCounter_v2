@@ -40,7 +40,7 @@ class PluginPageCounter_v2{
     wfPlugin::includeonce('wf/array');
     $server = new PluginWfArray($_SERVER);
     $REQUEST_URI = $server->get('REQUEST_URI');
-    $REQUEST_URI = utf8_encode($REQUEST_URI);
+    $REQUEST_URI = mb_convert_encoding($REQUEST_URI, 'UTF-8', 'ISO-8859-1');
     /**
      * filter, class
      */
@@ -72,7 +72,6 @@ class PluginPageCounter_v2{
       wfPlugin::includeonce('wf/array');
       $server = new PluginWfArray($_SERVER);
       $REQUEST_URI = $server->get('REQUEST_URI');
-      //$REQUEST_URI = utf8_encode($REQUEST_URI);
       $REQUEST_URI = mb_convert_encoding($REQUEST_URI, 'UTF-8', 'ISO-8859-1');
       $REQUEST_METHOD = $server->get('REQUEST_METHOD');
       $sql = new PluginWfArray();
