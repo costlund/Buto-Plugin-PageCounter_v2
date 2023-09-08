@@ -163,7 +163,7 @@ class PluginPageCounter_v2{
   }
   public function page_list_group_by_day_data(){
     $this->db_open();
-    $rs = $this->mysql->runSql("select wfPhpfunc::substr(created_at, 1, 10) as day, count(session_id) as hits from page_counter_v2_page group by day;");
+    $rs = $this->mysql->runSql("select left(created_at,10) as day, count(session_id) as hits from page_counter_v2_page group by day;");
     $rs = $rs['data'];
     wfPlugin::includeonce('datatable/datatable_1_10_18');
     $datatable = new PluginDatatableDatatable_1_10_18();
@@ -176,7 +176,7 @@ class PluginPageCounter_v2{
   }
   public function page_list_group_by_day_and_ip_data(){
     $this->db_open();
-    $rs = $this->mysql->runSql("select wfPhpfunc::substr(created_at, 1, 10) as day, REMOTE_ADDR, count(session_id) as hits from page_counter_v2_page group by day, REMOTE_ADDR;");
+    $rs = $this->mysql->runSql("select left(created_at,10) as day, REMOTE_ADDR, count(session_id) as hits from page_counter_v2_page group by day, REMOTE_ADDR;");
     $rs = $rs['data'];
     wfPlugin::includeonce('datatable/datatable_1_10_18');
     $datatable = new PluginDatatableDatatable_1_10_18();
