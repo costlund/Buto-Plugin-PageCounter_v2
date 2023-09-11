@@ -1,8 +1,12 @@
-version: 1.6.0
+version: 1.6.1
 history:
+  1.6.1:
+    date: '2023-09-11'
+    title: Versions
+    description: 'Versions update.'
   1.6.0:
     date: '2023-09-08'
-    title: 'SQL'
+    title: SQL
     description: 'SQL improvements how to count days.'
   1.5.0:
     date: '2023-08-18'
@@ -87,25 +91,25 @@ history:
 plugin:
   -
     name: wf/array
-    version: 1.2.4
+    version: 1.5.0
   -
     name: wf/yml
-    version: 1.5.1
+    version: 1.8.0
   -
     name: wf/mysql
-    version: 1.15.0
+    version: 1.17.0
   -
     name: datatable/datatable_1_10_18
-    version: 1.5.5
+    version: 1.6.1
   -
     name: wf/table
-    version: 1.34.1
+    version: 1.35.0
   -
     name: theme/include
-    version: 1.20.2
+    version: 1.20.4
   -
     name: string/match
-    version: 1.0.1
+    version: 1.1.0
 sys:
   -
     name: mercury
