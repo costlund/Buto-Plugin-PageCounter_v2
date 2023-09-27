@@ -1,5 +1,9 @@
-version: 1.6.1
+version: 1.6.2
 history:
+  1.6.2:
+    date: '2023-09-27'
+    title: Versions
+    description: 'Versions update.'
   1.6.1:
     date: '2023-09-11'
     title: Versions
@@ -91,22 +95,22 @@ history:
 plugin:
   -
     name: wf/array
-    version: 1.5.0
+    version: 1.5.1
   -
     name: wf/yml
-    version: 1.8.0
+    version: 1.8.1
   -
     name: wf/mysql
-    version: 1.17.0
+    version: 1.17.1
   -
     name: datatable/datatable_1_10_18
-    version: 1.6.1
+    version: 1.6.2
   -
     name: wf/table
-    version: 1.35.0
+    version: 1.35.1
   -
     name: theme/include
-    version: 1.20.4
+    version: 1.21.0
   -
     name: string/match
     version: 1.1.0
