@@ -75,7 +75,7 @@ class PluginPageCounter_v2{
       $REQUEST_URI = mb_convert_encoding($REQUEST_URI, 'UTF-8', 'ISO-8859-1');
       $REQUEST_METHOD = $server->get('REQUEST_METHOD');
       $sql = new PluginWfArray();
-      $sql->set('sql', "insert into page_counter_v2_page (session_id,HTTP_HOST,HTTP_USER_AGENT,HTTP_REFERER,HTTP_COOKIE,REMOTE_ADDR,REQUEST_URI,theme,class,method,language,REQUEST_METHOD,post_data) values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+      $sql->set('sql', "insert into page_counter_v2_page (session_id,HTTP_HOST,HTTP_USER_AGENT,HTTP_REFERER,HTTP_COOKIE,REMOTE_ADDR,REQUEST_URI,theme,class,method,language,REQUEST_METHOD,post_data,created_by) values (?,?,?,?,?,?,?,?,?,?,?,?,?,'[user_id]')");
       $sql->set('params/0', array('type' => 's', 'value' => session_id()));
       $sql->set('params/1', array('type' => 's', 'value' => $server->get('HTTP_HOST')));
       $sql->set('params/2', array('type' => 's', 'value' => $server->get('HTTP_USER_AGENT')));
